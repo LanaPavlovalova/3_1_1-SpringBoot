@@ -5,21 +5,17 @@
 </head>
 <body>
 <h1>Users</h1>
-<a href="/add-user">Add User</a>
+<a th:href="@{/users/add}">Add User</a>
 <table>
-    <tr>
-        <th>ID</th>
-        <th>Name</th>
-        <th>Age</th>
-        <th>Actions</th>
-    </tr>
     <tr th:each="user : ${users}">
         <td th:text="${user.id}"></td>
         <td th:text="${user.name}"></td>
         <td th:text="${user.age}"></td>
         <td>
-            <a th:href="@{/edit-user(id=${user.id})}">Edit</a>
-            <form th:action="@{/delete-user}" method="post" style="display:inline;">
+            <a href="/users/add">Add User</a>
+            ...
+            <a th:href="@{/users/edit/{id}(id=${user.id})}">Edit</a>
+            <form action="/users/delete" method="post">
                 <input type="hidden" name="id" th:value="${user.id}">
                 <button type="submit">Delete</button>
             </form>

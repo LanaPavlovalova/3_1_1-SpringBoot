@@ -1,11 +1,8 @@
 package com.lanapavlova.__1_1.SpringBoot.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
+import java.util.Objects;
 
 @Entity
 @Table(name = "users")
@@ -15,20 +12,20 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "name")
+    @Column(nullable = false)
+    @NotBlank(message = "Name is mandatory")
     private String name;
 
-    @Column(nullable = false, name = "age")
+    @Column(nullable = false)
+    @NotNull(message = "Age is mandatory")
+    @Min(value = 1, message = "Age must be greater than 0")
     private Integer age;
 
-    public User(Long id, String name, Integer age) {
-        this.id = id;
+    public User() {}
+
+    public User(String name, Integer age) {
         this.name = name;
         this.age = age;
-    }
-
-    public User() {
-
     }
 
     public Long getId() {
@@ -47,11 +44,27 @@ public class User {
         this.name = name;
     }
 
-    public int getAge() {
+    public Integer getAge() {
         return age;
     }
 
     public void setAge(Integer age) {
         this.age = age;
+    }
+
+    // equals и hashCode
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return Objects.equals(id, user.id) &&
+                Objects.equals(name, user.name) &&
+                Objects.equals(age, user.age);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, age);
     }
 }
